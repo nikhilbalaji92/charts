@@ -48,6 +48,13 @@ spec:
         image: {{ .Values.agent.image }}:{{ .Values.tag }}
         imagePullPolicy: {{ .Values.agent.pullPolicy }}
         env:
+        env:
+        - name: JAEGER_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name:  JAEGER_SAMPLER_MANAGER_HOST_PORT
+          value: "$(JAEGER_AGENT_HOST):5778"
         - name: COLLECTOR_HOST_PORT
           valueFrom:
             configMapKeyRef:
